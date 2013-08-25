@@ -31,7 +31,7 @@ module Fluent
       chain.next
     end
 
-    printf
+    private
     def flatten_record(record, prefix)
       ret = {}
       if record.is_a? Hash
