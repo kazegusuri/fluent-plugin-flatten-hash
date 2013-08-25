@@ -7,10 +7,11 @@ Gem::Specification.new do |spec|
   spec.version       = "0.0.1"
   spec.authors       = ["Masahiro Sano"]
   spec.email         = ["sabottenda@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{A fluentd plugin to flatten nested hash structure as a flat record}
+  spec.summary       = %q{A fluentd plugin to flatten nested hash structure as a flat record}
+  spec.homepage      = "https://github.com/sabottenda/fluent-plugin-flatten-hash"
   spec.license       = "MIT"
+  gem.has_rdoc       = false
 
   spec.files         = `git ls-files`.split($/)
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
