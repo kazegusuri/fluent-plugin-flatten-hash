@@ -70,7 +70,7 @@ The message is flattened like below:
 
 ### Mixins
 
-* HandleTagNameMixin]
+* HandleTagNameMixin
 
 ## Copyright
 
