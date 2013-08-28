@@ -22,11 +22,11 @@ module Fluent
     end
 
     def emit(tag, es, chain)
-      @tag ||= tag
+      tag = @tag || tag
       es.each do |time, record|
         record = flatten_record(record, [])
-        filter_record(@tag, time, record)
-        Engine.emit(@tag, time, record)
+        filter_record(tag, time, record)
+        Engine.emit(tag, time, record)
       end
       chain.next
     end
