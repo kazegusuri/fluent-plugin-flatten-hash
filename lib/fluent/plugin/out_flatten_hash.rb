@@ -25,9 +25,9 @@ module Fluent
       tag = @tag || tag
       es.each do |time, record|
         record = flatten_record(record, [])
-        tag = tag.dup
-        filter_record(tag, time, record)
-        Engine.emit(tag, time, record)
+        t = tag.dup
+        filter_record(t, time, record)
+        Engine.emit(t, time, record)
       end
       chain.next
     end
