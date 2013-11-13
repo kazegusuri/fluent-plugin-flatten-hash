@@ -81,4 +81,38 @@ class FlattenHashOutputTest < Test::Unit::TestCase
     ], d.records
   end
 
+  def test_emit_with_add_tag_prefix
+    d = create_driver BASE_CONFIG + %[
+      add_tag_prefix flattened.
+    ]
+    d.run do
+      d.emit({'message' => {'foo' => 'bar'}})
+      d.emit({'message' => {'foo' => 'bar'}})
+      d.emit({'message' => {'foo' => 'bar'}})
+    end
+    emits = d.emits
+    emits.each do |e|
+      assert_equal 'flattened.test', e[0]
+      assert_equal 'bar', e[2]["message.foo"]
+    end
+    assert_equal 3, emits.count
+  end
+
+  def test_emit_with_remove_tag_prefix
+    tag = 'prefix.prefix.test'
+    d = create_driver BASE_CONFIG + %[
+      remove_tag_prefix prefix.
+    ], tag
+    d.run do
+      d.emit({'message' => {'foo' => 'bar'}})
+      d.emit({'message' => {'foo' => 'bar'}})
+      d.emit({'message' => {'foo' => 'bar'}})
+    end
+    emits = d.emits
+    emits.each do |e|
+      assert_equal 'prefix.test', e[0]
+      assert_equal 'bar', e[2]["message.foo"]
+    end
+    assert_equal 3, emits.count
+  end
 end
