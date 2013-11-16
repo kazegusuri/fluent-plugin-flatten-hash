@@ -41,7 +41,7 @@ In this configuration, if you get a following nested/complex message:
         }
       }
     }
-  }
+  },
   "days":[
     "2013/08/24",
     "2013/08/25"
@@ -54,9 +54,9 @@ The message is flattened like below:
 ```js
 {
   "message_today":"good day",
-  "message_tommorow_is_a_bad":"day"
-  "days_0" => "2013/08/24",
-  "days_1" => "2013/08/25"
+  "message_tommorow_is_a_bad":"day",
+  "days_0":"2013/08/24",
+  "days_1":"2013/08/25"
 }
 ```
 
