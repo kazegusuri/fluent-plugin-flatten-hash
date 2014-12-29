@@ -18,6 +18,10 @@ Or install it yourself as:
 
 ## Configuration
 
+fluent-plugin-flatten-hash supports both Output and Filter plugin.
+
+### Output
+
 You can set a configuration like below:
 
 ```
@@ -58,6 +62,21 @@ The message is flattened like below:
   "days_0":"2013/08/24",
   "days_1":"2013/08/25"
 }
+```
+
+### Filter
+
+You can set a configuration like below:
+
+```
+<filter message>
+  type flatten_hash
+  separator _
+</filter>
+
+<match message>
+  type stdout
+</match>
 ```
 
 ## Contributing
