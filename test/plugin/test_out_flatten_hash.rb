@@ -1,4 +1,5 @@
 require 'helper'
+require 'fluent/plugin/out_flatten_hash'
 
 class FlattenHashOutputTest < Test::Unit::TestCase
   def setup
