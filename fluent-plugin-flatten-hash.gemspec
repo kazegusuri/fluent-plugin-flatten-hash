@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["sabottenda@gmail.com"]
   spec.description   = %q{A fluentd plugin to flatten nested hash structure as a flat record}
   spec.summary       = %q{A fluentd plugin to flatten nested hash structure as a flat record}
-  spec.homepage      = "https://github.com/sabottenda/fluent-plugin-flatten-hash"
+  spec.homepage      = "https://github.com/kazegusuri/fluent-plugin-flatten-hash"
   spec.license       = "MIT"
   spec.has_rdoc      = false
 
