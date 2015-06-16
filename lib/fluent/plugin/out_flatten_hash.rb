@@ -3,7 +3,7 @@ module Fluent
     include Fluent::HandleTagNameMixin
     Fluent::Plugin.register_output('flatten_hash', self)
 
-    require_relative 'util'
+    require_relative 'flatten_hash_util'
     include FlattenHashUtil
 
     config_param :tag, :string, :default => nil

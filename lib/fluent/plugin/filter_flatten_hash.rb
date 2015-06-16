@@ -2,7 +2,7 @@ module Fluent
   class FlattenHashFilter < Filter
     Plugin.register_filter('flatten_hash', self)
 
-    require_relative 'util'
+    require_relative 'flatten_hash_util'
     include FlattenHashUtil
 
     config_param :separator, :string, :default => '.'
