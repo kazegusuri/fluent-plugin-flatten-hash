@@ -8,7 +8,7 @@ module Fluent
 
     config_param :tag, :string, :default => nil
     config_param :separator, :string, :default => '.'
-    config_param :index_array, :bool, :default => true
+    config_param :flatten_array, :bool, :default => true
 
     def initialize
       super

@@ -1,7 +1,7 @@
 require 'helper'
 require 'fluent/plugin/filter_flatten_hash'
 
-class FlattenHashIndexArrayFilterTest < Test::Unit::TestCase
+class FlattenHashFlattenArrayFilterTest < Test::Unit::TestCase
   include Fluent
 
   BASE_CONFIG = %[
@@ -9,7 +9,7 @@ class FlattenHashIndexArrayFilterTest < Test::Unit::TestCase
   ]
   CONFIG = BASE_CONFIG + %[
     add_tag_prefix flattened
-    index_array false
+    flatten_array false
   ]
 
   def setup
@@ -21,7 +21,7 @@ class FlattenHashIndexArrayFilterTest < Test::Unit::TestCase
     Test::FilterTestDriver.new(FlattenHashFilter).configure(conf, true)
   end
 
-  def test_flatten_record_index_array_false
+  def test_flatten_record_flatten_array_false
     d = create_driver CONFIG
     es = Fluent::MultiEventStream.new
     now = Fluent::Engine.now

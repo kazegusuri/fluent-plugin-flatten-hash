@@ -7,7 +7,7 @@ module Fluent
           ret.merge! flatten_record(value, prefix + [key.to_s])
         }
       elsif record.is_a? Array
-        if @index_array
+        if @flatten_array
           record.each_with_index { |elem, index|
             ret.merge! flatten_record(elem, prefix + [index.to_s])
           }

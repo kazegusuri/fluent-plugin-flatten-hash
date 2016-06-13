@@ -6,7 +6,7 @@ module Fluent
     include FlattenHashUtil
 
     config_param :separator, :string, :default => '.'
-    config_param :index_array, :bool, :default => true
+    config_param :flatten_array, :bool, :default => true
     
     def configure(conf)
       super
