@@ -66,6 +66,28 @@ The message is flattened like below:
 }
 ```
 
+In order to prevent arrays from being indexed, you can use a configuration like below:
+
+```
+<match message>
+  type flatten_hash
+  add_tag_prefix flattened.
+  separator _
+  flatten_array false
+</match>
+```
+
+Using the same input, you'll instead end up with a message flattened like below:
+
+```js
+{
+  "message_today":"good day",
+  "message_tommorow_is_a_bad":"day",
+  "days":["2013/08/24","2013/08/25"]
+}
+```
+
+
 ### Filter
 
 You can set a configuration like below:
