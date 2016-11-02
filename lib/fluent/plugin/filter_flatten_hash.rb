@@ -1,13 +1,15 @@
-module Fluent
+require 'fluent/plugin/filter'
+
+module Fluent::Plugin
   class FlattenHashFilter < Filter
-    Plugin.register_filter('flatten_hash', self)
+    Fluent::Plugin.register_filter('flatten_hash', self)
 
     require_relative 'flatten_hash_util'
-    include FlattenHashUtil
+    include Fluent::FlattenHashUtil
 
     config_param :separator, :string, :default => '.'
     config_param :flatten_array, :bool, :default => true
-    
+
     def configure(conf)
       super
     end
@@ -15,5 +17,5 @@ module Fluent
     def filter(tag, time, record)
       flatten_record(record, [])
     end
-  end if defined?(Filter)
+  end
 end
