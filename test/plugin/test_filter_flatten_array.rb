@@ -1,8 +1,8 @@
 require 'helper'
+require 'fluent/test/driver/filter'
 require 'fluent/plugin/filter_flatten_hash'
 
 class FlattenHashFlattenArrayFilterTest < Test::Unit::TestCase
-  include Fluent
 
   BASE_CONFIG = %[
     type flatten_hash
@@ -18,7 +18,7 @@ class FlattenHashFlattenArrayFilterTest < Test::Unit::TestCase
   end
 
   def create_driver(conf = '')
-    Test::FilterTestDriver.new(FlattenHashFilter).configure(conf, true)
+    Fluent::Test::Driver::Filter.new(Fluent::Plugin::FlattenHashFilter).configure(conf, syntax: :v1)
   end
 
   def test_flatten_record_flatten_array_false
@@ -26,13 +26,13 @@ class FlattenHashFlattenArrayFilterTest < Test::Unit::TestCase
     es = Fluent::MultiEventStream.new
     now = Fluent::Engine.now
 
-    d.run do
-      d.emit({'message' => {'foo' => 'bar'}})
-      d.emit({"message" => {'foo' => 'bar', 'hoge' => 'fuga'}})
-      d.emit({"message" => {'nest' => {'foo' => 'bar'}}})
-      d.emit({"message" => {'nest' => {'nest' => {'foo' => 'bar'}}}})
-      d.emit({"message" => {'array' => ['foo', 'bar']}})
-      d.emit({"message" => {'array' => [{'foo' => 'bar'}, {'hoge' => 'fuga'}]}})
+    d.run(default_tag: 'test') do
+      d.feed({'message' => {'foo' => 'bar'}})
+      d.feed({"message" => {'foo' => 'bar', 'hoge' => 'fuga'}})
+      d.feed({"message" => {'nest' => {'foo' => 'bar'}}})
+      d.feed({"message" => {'nest' => {'nest' => {'foo' => 'bar'}}}})
+      d.feed({"message" => {'array' => ['foo', 'bar']}})
+      d.feed({"message" => {'array' => [{'foo' => 'bar'}, {'hoge' => 'fuga'}]}})
     end
 
     assert_equal [
@@ -42,6 +42,6 @@ class FlattenHashFlattenArrayFilterTest < Test::Unit::TestCase
       {"message.nest.nest.foo" => "bar"},
       {"message.array"=>["foo", "bar"]},
       {"message.array"=>[{"foo"=>"bar"}, {"hoge"=>"fuga"}]},
-    ], d.filtered_as_array.map{|x| x[2]}
+    ], d.filtered.map{|x| x[1]}
   end
 end

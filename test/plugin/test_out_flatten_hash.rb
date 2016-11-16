@@ -1,4 +1,5 @@
 require 'helper'
+require 'fluent/test/driver/output'
 require 'fluent/plugin/out_flatten_hash'
 
 class FlattenHashOutputTest < Test::Unit::TestCase
@@ -13,8 +14,8 @@ class FlattenHashOutputTest < Test::Unit::TestCase
     add_tag_prefix flattened
   ]
 
-  def create_driver(conf = CONFIG, tag='test')
-    Fluent::Test::OutputTestDriver.new(Fluent::FlattenHashOutput, tag).configure(conf)
+  def create_driver(conf = CONFIG)
+    Fluent::Test::Driver::Output.new(Fluent::Plugin::FlattenHashOutput).configure(conf)
   end
 
   def test_configure
@@ -51,13 +52,13 @@ class FlattenHashOutputTest < Test::Unit::TestCase
   def test_flatten_record
     d = create_driver
 
-    d.run do
-      d.emit({'message' => {'foo' => 'bar'}})
-      d.emit({"message" => {'foo' => 'bar', 'hoge' => 'fuga'}})
-      d.emit({"message" => {'nest' => {'foo' => 'bar'}}})
-      d.emit({"message" => {'nest' => {'nest' => {'foo' => 'bar'}}}})
-      d.emit({"message" => {'array' => ['foo', 'bar']}})
-      d.emit({"message" => {'array' => [{'foo' => 'bar'}, {'hoge' => 'fuga'}]}})
+    d.run(default_tag: 'test') do
+      d.feed({'message' => {'foo' => 'bar'}})
+      d.feed({"message" => {'foo' => 'bar', 'hoge' => 'fuga'}})
+      d.feed({"message" => {'nest' => {'foo' => 'bar'}}})
+      d.feed({"message" => {'nest' => {'nest' => {'foo' => 'bar'}}}})
+      d.feed({"message" => {'array' => ['foo', 'bar']}})
+      d.feed({"message" => {'array' => [{'foo' => 'bar'}, {'hoge' => 'fuga'}]}})
     end
 
     assert_equal [
@@ -67,53 +68,53 @@ class FlattenHashOutputTest < Test::Unit::TestCase
       {"message.nest.nest.foo" => "bar"},
       {"message.array.0" => "foo", "message.array.1" => "bar"},
       {"message.array.0.foo" => "bar", "message.array.1.hoge" => "fuga"},
-    ], d.records
+    ], d.events.map{|e| e[2]}
   end
 
   def test_separator
     d = create_driver CONFIG + %[separator /]
 
-    d.run do
-      d.emit({"message" => {'nest' => {'foo' => 'bar'}}})
+    d.run(default_tag: 'test') do
+      d.feed({"message" => {'nest' => {'foo' => 'bar'}}})
     end
 
     assert_equal [
       {"message/nest/foo" => "bar"},
-    ], d.records
+    ], d.events.map{|e| e[2]}
   end
 
   def test_emit_with_add_tag_prefix
     d = create_driver BASE_CONFIG + %[
       add_tag_prefix flattened.
     ]
-    d.run do
-      d.emit({'message' => {'foo' => 'bar'}})
-      d.emit({'message' => {'foo' => 'bar'}})
-      d.emit({'message' => {'foo' => 'bar'}})
+    d.run(default_tag: 'test') do
+      d.feed({'message' => {'foo' => 'bar'}})
+      d.feed({'message' => {'foo' => 'bar'}})
+      d.feed({'message' => {'foo' => 'bar'}})
     end
-    emits = d.emits
-    emits.each do |e|
+    events = d.events
+    events.each do |e|
       assert_equal 'flattened.test', e[0]
       assert_equal 'bar', e[2]["message.foo"]
     end
-    assert_equal 3, emits.count
+    assert_equal 3, events.count
   end
 
   def test_emit_with_remove_tag_prefix
     tag = 'prefix.prefix.test'
     d = create_driver BASE_CONFIG + %[
       remove_tag_prefix prefix.
-    ], tag
-    d.run do
-      d.emit({'message' => {'foo' => 'bar'}})
-      d.emit({'message' => {'foo' => 'bar'}})
-      d.emit({'message' => {'foo' => 'bar'}})
+    ]
+    d.run(default_tag: tag) do
+      d.feed({'message' => {'foo' => 'bar'}})
+      d.feed({'message' => {'foo' => 'bar'}})
+      d.feed({'message' => {'foo' => 'bar'}})
     end
-    emits = d.emits
-    emits.each do |e|
+    events = d.events
+    events.each do |e|
       assert_equal 'prefix.test', e[0]
       assert_equal 'bar', e[2]["message.foo"]
     end
-    assert_equal 3, emits.count
+    assert_equal 3, events.count
   end
 end
