@@ -8,7 +8,7 @@ A fluentd plugin to flatten nested hash structure as a flat record with unique k
 
 Add this line to your application's Gemfile:
 
-    gem 'fluent-plugin-flatten-hash'
+    gem install 'fluent-plugin-flatten-hash'
 
 And then execute:
 
