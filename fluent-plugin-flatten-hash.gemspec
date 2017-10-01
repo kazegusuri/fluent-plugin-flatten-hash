@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "fluent-plugin-flatten-hash"
-  spec.version       = "0.5.0"
+  spec.version       = "0.5.1"
   spec.authors       = ["Masahiro Sano"]
   spec.email         = ["sabottenda@gmail.com"]
   spec.description   = %q{A fluentd plugin to flatten nested hash structure as a flat record}
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.required_ruby_version = '>= 2.1.0'
 
-  spec.add_dependency "fluentd", [">= 0.14.8", "< 2"]
+  spec.add_dependency "fluentd", [">= 0.14.12", "< 2"]
   spec.add_development_dependency "rake"
   spec.add_development_dependency "test-unit"
 end
