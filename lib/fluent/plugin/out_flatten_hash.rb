@@ -14,10 +14,6 @@ module Fluent::Plugin
     config_param :separator, :string, :default => '.'
     config_param :flatten_array, :bool, :default => true
 
-    def initialize
-      super
-    end
-
     def configure(conf)
       super
       if (!@tag &&
